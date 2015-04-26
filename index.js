@@ -16,30 +16,9 @@ var union = require('arr-union');
  * See: https://github.com/wearefractal/gulp-util
  */
 
-var nonEnum = [
-  'message',
-  'name',
-  'stack'
-];
-
-var ignored = union(nonEnum, [
-  '__safety',
-  '_stack',
-  'plugin',
-  'showProperties',
-  'showStack'
-]);
-
-var props = [
-  'fileName',
-  'lineNumber',
-  'message',
-  'name',
-  'plugin',
-  'showProperties',
-  'showStack',
-  'stack'
-];
+var nonEnum = ['message', 'name', 'stack'];
+var ignored = union(nonEnum, ['__safety', '_stack', 'plugin', 'showProperties', 'showStack']);
+var props = ['fileName', 'lineNumber', 'message', 'name', 'plugin', 'showProperties', 'showStack', 'stack'];
 
 function PluginError(plugin, message, options) {
   if (!(this instanceof PluginError)) {
