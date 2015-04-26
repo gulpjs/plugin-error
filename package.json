@@ -35,9 +35,7 @@
     "object-assign": "^2.0.0"
   },
   "devDependencies": {
-    "lodash": "^3.7.0",
     "mocha": "*",
     "should": "*"
-  },
-  "keywords": []
+  }
 }
