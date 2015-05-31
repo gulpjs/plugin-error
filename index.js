@@ -7,7 +7,7 @@
 
 var util = require('util');
 var chalk = require('chalk');
-var assign = require('object-assign');
+var extend = require('extend-shallow');
 var differ = require('arr-diff');
 var union = require('arr-union');
 
@@ -174,7 +174,7 @@ function setDefaults(plugin, message, opts) {
  */
 
 function defaults(opts) {
-  return assign({showStack: false, showProperties: true}, opts);
+  return extend({showStack: false, showProperties: true}, opts);
 }
 
 /**
