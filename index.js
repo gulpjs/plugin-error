@@ -167,7 +167,7 @@ function setDefaults(plugin, message, opts) {
  * Extend default options with:
  *
  *  - `showStack`: default=false
- *  - `showProperties`: default=false
+ *  - `showProperties`: default=true
  *
  * @param  {Object} `opts` Options to extend
  * @return {Object}
