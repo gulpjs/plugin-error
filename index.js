@@ -6,7 +6,8 @@
  */
 
 var util = require('util');
-var chalk = require('chalk');
+var red = require('ansi-red');
+var cyan = require('ansi-cyan');
 var extend = require('extend-shallow');
 var differ = require('arr-diff');
 var union = require('arr-union');
@@ -135,9 +136,9 @@ PluginError.prototype.toString = function () {
 
 // format the output message
 function message(msg, thisArg) {
-  var sig = chalk.red(thisArg.name);
+  var sig = red(thisArg.name);
   sig += ' in plugin ';
-  sig += '"' + chalk.cyan(thisArg.plugin) + '"';
+  sig += '"' + cyan(thisArg.plugin) + '"';
   sig += '\n';
   sig += msg;
   return sig;
