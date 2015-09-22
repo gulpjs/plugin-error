@@ -14,7 +14,7 @@ var union = require('arr-union');
 
 /**
  * Based on gulp-util PluginError (MIT Licensed)
- * See: https://github.com/wearefractal/gulp-util
+ * See: https://github.com/gulpjs/gulp-util
  */
 
 var nonEnum = ['message', 'name', 'stack'];
