@@ -1,21 +1,9 @@
-/*!
- * plugin-error <https://github.com/jonschlinkert/plugin-error>
- *
- * Copyright (c) 2015, Jon Schlinkert.
- * Licensed under the MIT License.
- */
-
 var util = require('util');
 var red = require('ansi-red');
 var cyan = require('ansi-cyan');
 var extend = require('extend-shallow');
 var differ = require('arr-diff');
 var union = require('arr-union');
-
-/**
- * Based on gulp-util PluginError (MIT Licensed)
- * See: https://github.com/gulpjs/gulp-util
- */
 
 var nonEnum = ['message', 'name', 'stack'];
 var ignored = union(nonEnum, ['__safety', '_stack', 'plugin', 'showProperties', 'showStack']);
@@ -30,7 +18,7 @@ function PluginError(plugin, message, options) {
   var opts = setDefaults(plugin, message, options);
   var self = this;
 
-  // if opts has an error, get details from it
+  // If opts has an error, get details from it
   if (typeof opts.error === 'object') {
     var keys = union(Object.keys(opts.error), nonEnum);
 
@@ -40,13 +28,17 @@ function PluginError(plugin, message, options) {
     });
   }
 
-  // opts object can override
+  // Opts object can override
   props.forEach(function(prop) {
-    if (prop in opts) this[prop] = opts[prop];
+    if (prop in opts) {
+      this[prop] = opts[prop];
+    }
   }, this);
 
-  // defaults
-  if (!this.name) this.name = 'Error';
+  // Defaults
+  if (!this.name) {
+    this.name = 'Error';
+  }
   if (!this.stack) {
 
     /**
@@ -66,8 +58,12 @@ function PluginError(plugin, message, options) {
     Error.captureStackTrace(safety, arguments.callee || this.constructor);
     this.__safety = safety;
   }
-  if (!this.plugin) throw new Error('Missing plugin name');
-  if (!this.message) throw new Error('Missing error message');
+  if (!this.plugin) {
+    throw new Error('Missing plugin name');
+  }
+  if (!this.message) {
+    throw new Error('Missing error message');
+  }
 }
 
 util.inherits(PluginError, Error);
@@ -79,7 +75,9 @@ util.inherits(PluginError, Error);
 PluginError.prototype._messageWithDetails = function() {
   var msg = 'Message:\n    ' + this.message;
   var details = this._messageDetails();
-  if (details !== '') msg += '\n' + details;
+  if (details !== '') {
+    msg += '\n' + details;
+  }
   return msg;
 };
 
@@ -88,14 +86,19 @@ PluginError.prototype._messageWithDetails = function() {
  */
 
 PluginError.prototype._messageDetails = function() {
-  if (!this.showProperties) return '';
+  if (!this.showProperties) {
+    return '';
+  }
 
   var props = differ(Object.keys(this), ignored);
   var len = props.length;
 
-  if (len === 0) return '';
+  if (len === 0) {
+    return '';
+  }
 
-  var res = '', i = 0;
+  var res = '';
+  var i = 0;
   while (len--) {
     var prop = props[i++];
     res += '    ';
@@ -109,14 +112,14 @@ PluginError.prototype._messageDetails = function() {
  * Override the `toString` method
  */
 
-PluginError.prototype.toString = function () {
+PluginError.prototype.toString = function() {
   var detailsWithStack = function(stack) {
     return this._messageWithDetails() + '\nStack:\n' + stack;
   }.bind(this);
 
   var msg = '';
   if (this.showStack) {
-    // if there is no wrapped error, use the stack captured in the PluginError ctor
+    // If there is no wrapped error, use the stack captured in the PluginError ctor
     if (this.__safety) {
       msg = this.__safety.stack;
 
@@ -128,13 +131,13 @@ PluginError.prototype.toString = function () {
       msg = detailsWithStack(this.stack);
     }
     return message(msg, this);
-    }
+  }
 
   msg = this._messageWithDetails();
   return message(msg, this);
 };
 
-// format the output message
+// Format the output message
 function message(msg, thisArg) {
   var sig = red(thisArg.name);
   sig += ' in plugin ';
@@ -175,7 +178,10 @@ function setDefaults(plugin, message, opts) {
  */
 
 function defaults(opts) {
-  return extend({showStack: false, showProperties: true}, opts);
+  return extend({
+    showStack: false,
+    showProperties: true,
+  }, opts);
 }
 
 /**
