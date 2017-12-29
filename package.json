@@ -1,7 +1,7 @@
 {
   "name": "plugin-error",
   "description": "Error handling for vinyl plugins. Just an abstraction of what's in gulp-util with minor changes.",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "homepage": "https://github.com/jonschlinkert/plugin-error",
   "author": {
     "name": "Jon Schlinkert",
