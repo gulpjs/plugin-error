@@ -16,6 +16,7 @@
   },
   "license": "MIT",
   "files": [
+    "index.d.ts",
     "index.js"
   ],
   "main": "index.js",
@@ -23,7 +24,7 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha test.js && tsc -p test/types"
   },
   "dependencies": {
     "ansi-cyan": "^0.1.1",
@@ -33,8 +34,9 @@
     "extend-shallow": "^1.1.2"
   },
   "devDependencies": {
-    "mocha": "*",
-    "should": "*"
+    "mocha": "^2.5.3",
+    "should": "^13.2.0",
+    "typescript": "^2.6.2"
   },
   "keywords": [
     "error",
