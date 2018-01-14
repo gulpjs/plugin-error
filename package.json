@@ -27,8 +27,7 @@
     "coveralls": "npm run cover && istanbul-coveralls"
   },
   "dependencies": {
-    "ansi-cyan": "^0.1.1",
-    "ansi-red": "^0.1.1",
+    "ansi-colors": "^1.0.1",
     "arr-diff": "^1.0.1",
     "arr-union": "^2.0.1",
     "extend-shallow": "^1.1.2"

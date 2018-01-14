@@ -1,6 +1,5 @@
 var util = require('util');
-var red = require('ansi-red');
-var cyan = require('ansi-cyan');
+var colors = require('ansi-colors');
 var extend = require('extend-shallow');
 var differ = require('arr-diff');
 var union = require('arr-union');
@@ -139,9 +138,9 @@ PluginError.prototype.toString = function() {
 
 // Format the output message
 function message(msg, thisArg) {
-  var sig = red(thisArg.name);
+  var sig = colors.red(thisArg.name);
   sig += ' in plugin ';
-  sig += '"' + cyan(thisArg.plugin) + '"';
+  sig += '"' + colors.cyan(thisArg.plugin) + '"';
   sig += '\n';
   sig += msg;
   return sig;
