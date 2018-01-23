@@ -1,6 +1,6 @@
 {
   "name": "plugin-error",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Error handling for Vinyl plugins.",
   "author": "Gulp Team <team@gulpjs.com> (http://gulpjs.com/)",
   "contributors": [
