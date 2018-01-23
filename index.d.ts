@@ -1,17 +1,5 @@
 declare namespace PluginError {
-  export interface Constructor {
-    /**
-     * @param options Options with plugin name and message
-     */
-    new(options: Options & {plugin: string, message: string}): PluginError;
-
-    /**
-     * @param plugin Plugin name
-     * @param message Error message
-     * @param options Error options
-     */
-    new (plugin: string, message: string, options?: Options): PluginError;
-
+  interface Constructor {
     /**
      * @param plugin Plugin name
      * @param error Base error
@@ -21,9 +9,21 @@ declare namespace PluginError {
 
     /**
      * @param plugin Plugin name
-     * @param options Options with message
+     * @param error Base error or error message
+     * @param options Error options
      */
-    new(plugin: string, options: Options & {message: string}): PluginError;
+    new <E extends Error = Error>(plugin: string, error: E | string, options: Options): PluginError<E | {[K in keyof E]: undefined}>;
+
+    /**
+     * @param plugin Plugin name
+     * @param error Base error, error message, or options with message
+     */
+    new <E extends Error = Error>(plugin: string, error: E | string | (Options & {message: string})): PluginError<E | {[K in keyof E]: undefined}>;
+
+    /**
+     * @param options Options with plugin name and message
+     */
+    new(options: Options & {plugin: string, message: string}): PluginError;
   }
 
   interface Options {
@@ -71,11 +71,12 @@ declare namespace PluginError {
     stack?: string;
   }
 
-
   /**
-   * The `Base` interface defines the properties available on all the the instances of `PluginError`.
+   * The `SimplePluginError` interface defines the properties available on all the the instances of `PluginError`.
+   *
+   * @internal
    */
-  export interface Base extends Error {
+  interface SimplePluginError extends Error {
     /**
      * Plugin name
      */
@@ -106,7 +107,7 @@ declare namespace PluginError {
 /**
  * Abstraction for error handling for Vinyl plugins
  */
-type PluginError<T = {}> = PluginError.Base & T;
+type PluginError<T = {}> = PluginError.SimplePluginError & T;
 
 declare const PluginError: PluginError.Constructor;
 
