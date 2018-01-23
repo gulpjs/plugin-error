@@ -7,17 +7,10 @@ declare namespace PluginError {
 
     /**
      * @param plugin Plugin name
-     * @param message Error message
+     * @param error Base error / Error message
      * @param options Error options
      */
-    new (plugin: string, message: string, options?: Options): PluginError;
-
-    /**
-     * @param plugin Plugin name
-     * @param error Base error
-     * @param options Error options
-     */
-    new <E extends Error>(plugin: string, error: E, options?: Options): PluginError<E>;
+    new <E extends Error>(plugin: string, error: E | string, options?: Options): PluginError<E>;
 
     /**
      * @param plugin Plugin name
