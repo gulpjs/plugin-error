@@ -142,7 +142,7 @@ PluginError.prototype.toString = function() {
 // Format the output message
 function message(msg, thisArg) {
   var sig = colors.red(thisArg.name);
-  sig += ' in';
+  sig += ' in ';
   sig += thisArg.contextName;
   sig += ' ';
   sig += '"' + colors.cyan(thisArg.plugin) + '"';
