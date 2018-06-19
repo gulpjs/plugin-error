@@ -69,6 +69,12 @@ declare namespace PluginError {
      * By default it uses the `stack` of the original error if you used one, otherwise it captures a new stack.
      */
     stack?: string;
+
+    /**
+     * Error context
+     * Default: 'plugin'
+     */
+    contextName?: string;
   }
 
   /**
