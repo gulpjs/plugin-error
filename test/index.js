@@ -18,6 +18,20 @@ describe('PluginError()', function() {
     done();
   });
 
+  it('should default the context name to plugin', function(done) {
+    var realErr = { message: 'something broke' };
+    var err = new PluginError('test', realErr);
+    expect(err.toString()).toContain(' in plugin ');
+    done();
+  });
+
+  it('should say in task when we set the context name to task', function(done) {
+    var realErr = { message: 'something broke', contextName: 'task' };
+    var err = new PluginError('test', realErr);
+    expect(err.toString()).toContain(' in task ');
+    done();
+  });
+
   it('should print the plugin name in toString', function(done) {
     var err = new PluginError('test', 'something broke');
     expect(err.toString()).toContain('test');

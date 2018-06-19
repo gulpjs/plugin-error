@@ -4,9 +4,9 @@ var extend = require('extend-shallow');
 var differ = require('arr-diff');
 var union = require('arr-union');
 
-var nonEnum = ['message', 'name', 'stack'];
+var nonEnum = ['message', 'name', 'stack', 'contextName'];
 var ignored = union(nonEnum, ['__safety', '_stack', 'plugin', 'showProperties', 'showStack']);
-var props = ['fileName', 'lineNumber', 'message', 'name', 'plugin', 'showProperties', 'showStack', 'stack'];
+var props = ['fileName', 'lineNumber', 'message', 'name', 'contextName', 'plugin', 'showProperties', 'showStack', 'stack'];
 
 function PluginError(plugin, message, options) {
   if (!(this instanceof PluginError)) {
@@ -37,6 +37,9 @@ function PluginError(plugin, message, options) {
   // Defaults
   if (!this.name) {
     this.name = 'Error';
+  }
+  if (!this.contextName) {
+    this.contextName = 'plugin';
   }
   if (!this.stack) {
 
@@ -139,7 +142,9 @@ PluginError.prototype.toString = function() {
 // Format the output message
 function message(msg, thisArg) {
   var sig = colors.red(thisArg.name);
-  sig += ' in plugin ';
+  sig += ' in ';
+  sig += thisArg.contextName;
+  sig += ' ';
   sig += '"' + colors.cyan(thisArg.plugin) + '"';
   sig += '\n';
   sig += msg;
