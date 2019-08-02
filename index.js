@@ -3,6 +3,7 @@ var colors = require('ansi-colors');
 var extend = require('extend-shallow');
 var differ = require('arr-diff');
 var union = require('arr-union');
+var process = require('process');
 
 var nonEnum = ['message', 'name', 'stack'];
 var ignored = union(nonEnum, ['__safety', '_stack', 'plugin', 'showProperties', 'showStack']);
@@ -11,6 +12,10 @@ var props = ['fileName', 'lineNumber', 'message', 'name', 'plugin', 'showPropert
 function PluginError(plugin, message, options) {
   if (!(this instanceof PluginError)) {
     throw new Error('Call PluginError using new');
+  }
+
+  if (process.env.PLUGIN_ERROR_ALWAYS_SHOW_STACK) {
+    options.showStack = true;
   }
 
   Error.call(this);
