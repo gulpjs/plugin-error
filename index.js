@@ -5,7 +5,7 @@ var differ = require('arr-diff');
 var union = require('arr-union');
 
 var nonEnum = ['message', 'name', 'stack'];
-var ignored = union(nonEnum, ['__safety', '_stack', 'plugin', 'showProperties', 'showStack']);
+var ignored = union(nonEnum, ['__safety', '_stack', 'plugin', 'showProperties', 'showStack', 'domain', 'domainThrown']);
 var props = ['fileName', 'lineNumber', 'message', 'name', 'plugin', 'showProperties', 'showStack', 'stack'];
 
 function PluginError(plugin, message, options) {
