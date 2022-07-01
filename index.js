@@ -9,6 +9,8 @@ var ignored = new Set(
     'plugin',
     'showProperties',
     'showStack',
+    'domain',
+    'domainThrown'
   ])
 );
 var props = [
