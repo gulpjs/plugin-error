@@ -252,14 +252,14 @@ describe('PluginError()', function () {
     done();
   });
 
-  it('should not modify error argument', function(done) {
+  it('should not modify error argument', function (done) {
     var realErr = { message: 'something broke' };
     new PluginError('test', realErr);
     expect(realErr).toEqual({ message: 'something broke' });
     done();
   });
 
-  it('should not modify options argument', function(done) {
+  it('should not modify options argument', function (done) {
     var opts = { showStack: true };
     new PluginError('test', 'message', opts);
     expect(opts).toEqual({ showStack: true });
