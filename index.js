@@ -1,16 +1,30 @@
 var util = require('util');
 var colors = require('ansi-colors');
-var extend = require('extend-shallow');
-var differ = require('arr-diff');
-var union = require('arr-union');
 
 var nonEnum = ['message', 'name', 'stack'];
-var ignored = union(nonEnum, ['__safety', '_stack', 'plugin', 'showProperties', 'showStack']);
-var props = ['fileName', 'lineNumber', 'message', 'name', 'plugin', 'showProperties', 'showStack', 'stack'];
+var ignored = new Set(
+  nonEnum.concat([
+    '__safety',
+    '_stack',
+    'plugin',
+    'showProperties',
+    'showStack',
+  ])
+);
+var props = [
+  'fileName',
+  'lineNumber',
+  'message',
+  'name',
+  'plugin',
+  'showProperties',
+  'showStack',
+  'stack',
+];
 
 function PluginError(plugin, message, options) {
   if (!(this instanceof PluginError)) {
-    throw new Error('Call PluginError using new');
+    return new PluginError(plugin, message, options);
   }
 
   Error.call(this);
@@ -19,27 +33,23 @@ function PluginError(plugin, message, options) {
 
   // If opts has an error, get details from it
   if (typeof opts.error === 'object') {
-    var keys = union(Object.keys(opts.error), nonEnum);
+    var keys = new Set(Object.keys(opts.error).concat(nonEnum));
 
     // These properties are not enumerable, so we have to add them explicitly.
-    keys.forEach(function(prop) {
+    keys.forEach(function (prop) {
       self[prop] = opts.error[prop];
     });
   }
 
   // Opts object can override
-  props.forEach(function(prop) {
+  props.forEach(function (prop) {
     if (prop in opts) {
       this[prop] = opts[prop];
     }
   }, this);
 
   // Defaults
-  if (!this.name) {
-    this.name = 'Error';
-  }
   if (!this.stack) {
-
     /**
      * `Error.captureStackTrace` appends a stack property which
      * relies on the toString method of the object it is applied to.
@@ -50,7 +60,7 @@ function PluginError(plugin, message, options) {
      */
 
     var safety = {};
-    safety.toString = function() {
+    safety.toString = function () {
       return this._messageWithDetails() + '\nStack:';
     }.bind(this);
 
@@ -71,7 +81,7 @@ util.inherits(PluginError, Error);
  * Output a formatted message with details
  */
 
-PluginError.prototype._messageWithDetails = function() {
+PluginError.prototype._messageWithDetails = function () {
   var msg = 'Message:\n    ' + this.message;
   var details = this._messageDetails();
   if (details !== '') {
@@ -84,12 +94,14 @@ PluginError.prototype._messageWithDetails = function() {
  * Output actual message details
  */
 
-PluginError.prototype._messageDetails = function() {
+PluginError.prototype._messageDetails = function () {
   if (!this.showProperties) {
     return '';
   }
 
-  var props = differ(Object.keys(this), ignored);
+  var props = Object.keys(this).filter(function (key) {
+    return !ignored.has(key);
+  });
   var len = props.length;
 
   if (len === 0) {
@@ -111,8 +123,8 @@ PluginError.prototype._messageDetails = function() {
  * Override the `toString` method
  */
 
-PluginError.prototype.toString = function() {
-  var detailsWithStack = function(stack) {
+PluginError.prototype.toString = function () {
+  var detailsWithStack = function (stack) {
     return this._messageWithDetails() + '\nStack:\n' + stack;
   }.bind(this);
 
@@ -121,10 +133,8 @@ PluginError.prototype.toString = function() {
     // If there is no wrapped error, use the stack captured in the PluginError ctor
     if (this.__safety) {
       msg = this.__safety.stack;
-
     } else if (this._stack) {
       msg = detailsWithStack(this._stack);
-
     } else {
       // Stack from wrapped error
       msg = detailsWithStack(this.stack);
@@ -177,10 +187,13 @@ function setDefaults(plugin, message, opts) {
  */
 
 function defaults(opts) {
-  return extend({
-    showStack: false,
-    showProperties: true,
-  }, opts);
+  return Object.assign(
+    {
+      showStack: false,
+      showProperties: true,
+    },
+    opts
+  );
 }
 
 /**

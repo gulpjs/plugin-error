@@ -6,7 +6,7 @@
 
 # plugin-error
 
-[![NPM version][npm-image]][npm-url] [![Downloads][downloads-image]][npm-url] [![Build Status][travis-image]][travis-url] [![AppVeyor Build Status][appveyor-image]][appveyor-url] [![Coveralls Status][coveralls-image]][coveralls-url] [![Gitter chat][gitter-image]][gitter-url]
+[![NPM version][npm-image]][npm-url] [![Downloads][downloads-image]][npm-url] [![Build Status][ci-image]][ci-url] [![Coveralls Status][coveralls-image]][coveralls-url]
 
 Error handling for Vinyl plugins.
 
@@ -52,18 +52,14 @@ Error constructor that takes:
 
 MIT
 
-[downloads-image]: http://img.shields.io/npm/dm/plugin-error.svg
+<!-- prettier-ignore-start -->
+[downloads-image]: https://img.shields.io/npm/dm/plugin-error.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/plugin-error
-[npm-image]: http://img.shields.io/npm/v/plugin-error.svg
+[npm-image]: https://img.shields.io/npm/v/plugin-error.svg?style=flat-square
 
-[travis-url]: https://travis-ci.org/gulpjs/plugin-error
-[travis-image]: http://img.shields.io/travis/gulpjs/plugin-error.svg?label=travis-ci
-
-[appveyor-url]: https://ci.appveyor.com/project/gulpjs/plugin-error
-[appveyor-image]: https://img.shields.io/appveyor/ci/gulpjs/plugin-error.svg?label=appveyor
+[ci-url]: https://github.com/gulpjs/plugin-error/actions?query=workflow:dev
+[ci-image]: https://img.shields.io/github/workflow/status/gulpjs/plugin-error/dev?style=flat-square
 
 [coveralls-url]: https://coveralls.io/r/gulpjs/plugin-error
-[coveralls-image]: http://img.shields.io/coveralls/gulpjs/plugin-error/master.svg
-
-[gitter-url]: https://gitter.im/gulpjs/gulp
-[gitter-image]: https://badges.gitter.im/gulpjs/gulp.svg
+[coveralls-image]: https://img.shields.io/coveralls/gulpjs/plugin-error/master.svg?style=flat-square
+<!-- prettier-ignore-end -->
