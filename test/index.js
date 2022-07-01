@@ -17,6 +17,20 @@ describe('PluginError()', function () {
     done();
   });
 
+  it('throws if plugin name not set', function (done) {
+    expect(function () {
+      new PluginError(undefined, 'something broke');
+    }).toThrow(/Missing plugin name/);
+    done();
+  });
+
+  it('throws if message not set', function (done) {
+    expect(function () {
+      new PluginError('test');
+    }).toThrow(/Missing error message/);
+    done();
+  });
+
   it('should default name to Error, even when wrapped error has no name', function (done) {
     var realErr = { message: 'something broke' };
     var err = new PluginError('test', realErr);
