@@ -11,6 +11,12 @@ describe('PluginError()', function () {
     done();
   });
 
+  it('can be constructed without new', function (done) {
+    var err = PluginError('test', 'something broke');
+    expect(err).toBeInstanceOf(PluginError);
+    done();
+  });
+
   it('should default name to Error, even when wrapped error has no name', function (done) {
     var realErr = { message: 'something broke' };
     var err = new PluginError('test', realErr);

@@ -24,7 +24,7 @@ var props = [
 
 function PluginError(plugin, message, options) {
   if (!(this instanceof PluginError)) {
-    throw new Error('Call PluginError using new');
+    return new PluginError(plugin, message, options);
   }
 
   Error.call(this);
