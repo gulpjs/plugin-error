@@ -49,9 +49,6 @@ function PluginError(plugin, message, options) {
   }, this);
 
   // Defaults
-  if (!this.name) {
-    this.name = 'Error';
-  }
   if (!this.stack) {
     /**
      * `Error.captureStackTrace` appends a stack property which
