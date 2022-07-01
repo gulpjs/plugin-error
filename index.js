@@ -164,13 +164,12 @@ function setDefaults(plugin, message, opts) {
   if (typeof plugin === 'object') {
     return defaults(plugin);
   }
-  opts = opts || {};
   if (message instanceof Error) {
-    opts.error = message;
+    opts = Object.assign({}, opts, { error: message });
   } else if (typeof message === 'object') {
-    opts = message;
+    opts = Object.assign({}, message);
   } else {
-    opts.message = message;
+    opts = Object.assign({}, opts, { message: message });
   }
   opts.plugin = plugin;
   return defaults(opts);
