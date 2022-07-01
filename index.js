@@ -10,7 +10,7 @@ var ignored = new Set(
     'showProperties',
     'showStack',
     'domain',
-    'domainThrown'
+    'domainThrown',
   ])
 );
 var props = [
