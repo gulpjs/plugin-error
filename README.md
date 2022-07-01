@@ -16,12 +16,12 @@ Error handling for Vinyl plugins.
 var PluginError = require('plugin-error');
 
 var err = new PluginError('test', {
-  message: 'something broke'
+  message: 'something broke',
 });
 
 var err = new PluginError({
   plugin: 'test',
-  message: 'something broke'
+  message: 'something broke',
 });
 
 var err = new PluginError('test', 'something broke');
@@ -37,16 +37,17 @@ var err = new PluginError('test', existingError, { showStack: true });
 ### `new PluginError(pluginName, message[, options])`
 
 Error constructor that takes:
-* `pluginName` - a `String` that should be the module name of your plugin
-* `message` - a `String` message or an existing `Error` object
-* `options` - an `Object` of your options
+
+- `pluginName` - a `String` that should be the module name of your plugin
+- `message` - a `String` message or an existing `Error` object
+- `options` - an `Object` of your options
 
 **Behavior:**
 
-* By default the stack will not be shown. Set `options.showStack` to true if you think the stack is important for your error.
-* If you pass an error object as the message the stack will be pulled from that, otherwise one will be created.
-* If you pass in a custom stack string you need to include the message along with that.
-* Error properties will be included in `err.toString()`, but may be omitted by including `{ showProperties: false }` in the options.
+- By default the stack will not be shown. Set `options.showStack` to true if you think the stack is important for your error.
+- If you pass an error object as the message the stack will be pulled from that, otherwise one will be created.
+- If you pass in a custom stack string you need to include the message along with that.
+- Error properties will be included in `err.toString()`, but may be omitted by including `{ showProperties: false }` in the options.
 
 ## License
 

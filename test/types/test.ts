@@ -1,41 +1,46 @@
-import PluginError = require("plugin-error");
+import PluginError = require('plugin-error');
 
 {
   // Check constructor signatures
   // See: https://github.com/gulpjs/gulp-util#new-pluginerrorpluginname-message-options
   {
-    const err = new PluginError("test", {
-      message: "something broke",
+    const err = new PluginError('test', {
+      message: 'something broke',
     });
   }
 
   {
     const err = new PluginError({
-      plugin: "test",
-      message: "something broke",
+      plugin: 'test',
+      message: 'something broke',
     });
   }
 
   {
-    const err = new PluginError("test", "something broke");
+    const err = new PluginError('test', 'something broke');
   }
 
   {
-    const err = new PluginError("test", "something broke", {showStack: true});
+    const err = new PluginError('test', 'something broke', { showStack: true });
   }
 
   {
-    const existingError = new Error("OMG");
-    const options: PluginError.Options = {showStack: true};
-    const err = new PluginError("test", existingError, options);
+    const existingError = new Error('OMG');
+    const options: PluginError.Options = { showStack: true };
+    const err = new PluginError('test', existingError, options);
   }
 }
 
 {
   {
     // Check available properties
-    const realErr = Object.assign(new Error("something broke"), {fileName: "original.js"});
-    const err = new PluginError("test", realErr, {showStack: true, fileName: "override.js"});
+    const realErr = Object.assign(new Error('something broke'), {
+      fileName: 'original.js',
+    });
+    const err = new PluginError('test', realErr, {
+      showStack: true,
+      fileName: 'override.js',
+    });
     const plugin: string = err.plugin;
     const message: string = err.message;
     const fileName: string = err.fileName;
@@ -44,8 +49,10 @@ import PluginError = require("plugin-error");
   }
   {
     // Inference of custom properties from `error` argument,
-    const realErr = Object.assign(new Error("something broke"), {abstractProperty: "abstract"});
-    const err = new PluginError("test", realErr, realErr);
+    const realErr = Object.assign(new Error('something broke'), {
+      abstractProperty: 'abstract',
+    });
+    const err = new PluginError('test', realErr, realErr);
     const plugin: string = err.plugin;
     const message: string = err.message;
     const abstractProperty: string = err.abstractProperty;
@@ -54,16 +61,18 @@ import PluginError = require("plugin-error");
 
 {
   // Union types
-  const PLUGIN_NAME: string = "test";
+  const PLUGIN_NAME: string = 'test';
 
   interface FooError extends Error {
     foo: number;
   }
 
-  const ERROR: Error = new Error("something broke");
-  const FOO_ERROR: FooError = Object.assign(new Error("something broke"), {foo: 1});
-  const MESSAGE: string = "something broke";
-  const OPTIONS: {message: string} = {message: "something broke"};
+  const ERROR: Error = new Error('something broke');
+  const FOO_ERROR: FooError = Object.assign(new Error('something broke'), {
+    foo: 1,
+  });
+  const MESSAGE: string = 'something broke';
+  const OPTIONS: { message: string } = { message: 'something broke' };
 
   {
     function createError(error: Error | string) {
@@ -116,7 +125,9 @@ import PluginError = require("plugin-error");
 
   {
     // Check support for  unions with option object
-    function createError(error: FooError | string | (PluginError.Options & {message: string})) {
+    function createError(
+      error: FooError | string | (PluginError.Options & { message: string })
+    ) {
       return new PluginError(PLUGIN_NAME, error);
     }
 
