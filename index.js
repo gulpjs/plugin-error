@@ -10,6 +10,7 @@ var ignored = new Set(
     'showProperties',
     'showStack',
     'domain',
+    'domainEmitter',
     'domainThrown',
   ])
 );
