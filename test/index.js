@@ -252,6 +252,19 @@ describe('PluginError()', function () {
     done();
   });
 
+  it('should not show additional properties added by a domain', function (done) {
+    var Duplex = require('stream').Duplex;
+    var stream = new Duplex({ objectMode: true });
+    var domain = require('domain').create();
+    domain.add(stream);
+    domain.on('error', function (err) {
+      expect(err).toBeInstanceOf(PluginError);
+      expect(err.toString()).not.toContain('domain');
+      done();
+    });
+    stream.emit('error', new PluginError('plugin', 'message'));
+  });
+
   it('should not modify error argument', function (done) {
     var realErr = { message: 'something broke' };
     new PluginError('test', realErr);
