@@ -1,5 +1,12 @@
 # Changelog
 
+### [2.0.1](https://www.github.com/gulpjs/plugin-error/compare/v2.0.0...v2.0.1) (2022-12-06)
+
+
+### Bug Fixes
+
+* Exclude `domainEmitter` from output ([#26](https://www.github.com/gulpjs/plugin-error/issues/26)) ([2a89513](https://www.github.com/gulpjs/plugin-error/commit/2a89513886afb1aa449561e2f98f7ef409944226))
+
 ## [2.0.0](https://www.github.com/gulpjs/plugin-error/compare/v1.0.1...v2.0.0) (2022-07-01)
 
 
