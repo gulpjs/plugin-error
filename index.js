@@ -1,5 +1,52 @@
 var util = require('util');
-var colors = require('ansi-colors');
+
+function hasFlag(flag) {
+  return process.argv.indexOf('--' + flag) !== -1;
+}
+
+function hasColors() {
+  if (hasFlag('no-color')) {
+    return false;
+  }
+
+  if (hasFlag('color')) {
+    return true;
+  }
+
+  if (process.env.FORCE_COLOR && process.env.FORCE_COLOR !== '0') {
+    return true;
+  }
+
+  if (process.env.NO_COLOR || process.env.TERM === 'dumb') {
+    return false;
+  }
+
+  return !!(process.stdout && process.stdout.isTTY);
+}
+
+function Colorized(text, style) {
+  this.text = text;
+  this.style = style;
+}
+
+Colorized.prototype[util.inspect.custom] = function (depth, opts) {
+  return opts.stylize(this.text, this.style);
+};
+
+function colorize(text, style) {
+  return util.inspect(new Colorized(String(text), style), {
+    colors: hasColors(),
+  });
+}
+
+var colors = {
+  red: function (text) {
+    return colorize(text, 'regexp');
+  },
+  cyan: function (text) {
+    return colorize(text, 'special');
+  },
+};
 
 var nonEnum = ['message', 'name', 'stack'];
 var ignored = new Set(
