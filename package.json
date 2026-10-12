@@ -34,6 +34,7 @@
     "ansi-colors": "^1.0.1"
   },
   "devDependencies": {
+    "@types/node": "20.14.8",
     "eslint": "10.11.0",
     "eslint-config-gulp": "7.0.0",
     "expect": "^27.0.0",
