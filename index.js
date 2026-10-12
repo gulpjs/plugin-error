@@ -1,28 +1,28 @@
-var util = require('util');
-var colors = require('ansi-colors');
+var util = require("util");
+var colors = require("ansi-colors");
 
-var nonEnum = ['message', 'name', 'stack'];
+var nonEnum = ["message", "name", "stack"];
 var ignored = new Set(
   nonEnum.concat([
-    '__safety',
-    '_stack',
-    'plugin',
-    'showProperties',
-    'showStack',
-    'domain',
-    'domainEmitter',
-    'domainThrown',
-  ])
+    "__safety",
+    "_stack",
+    "plugin",
+    "showProperties",
+    "showStack",
+    "domain",
+    "domainEmitter",
+    "domainThrown",
+  ]),
 );
 var props = [
-  'fileName',
-  'lineNumber',
-  'message',
-  'name',
-  'plugin',
-  'showProperties',
-  'showStack',
-  'stack',
+  "fileName",
+  "lineNumber",
+  "message",
+  "name",
+  "plugin",
+  "showProperties",
+  "showStack",
+  "stack",
 ];
 
 function PluginError(plugin, message, options) {
@@ -35,7 +35,7 @@ function PluginError(plugin, message, options) {
   var self = this;
 
   // If opts has an error, get details from it
-  if (typeof opts.error === 'object') {
+  if (typeof opts.error === "object") {
     var keys = new Set(Object.keys(opts.error).concat(nonEnum));
 
     // These properties are not enumerable, so we have to add them explicitly.
@@ -64,17 +64,17 @@ function PluginError(plugin, message, options) {
 
     var safety = {};
     safety.toString = function () {
-      return this._messageWithDetails() + '\nStack:';
+      return this._messageWithDetails() + "\nStack:";
     }.bind(this);
 
     Error.captureStackTrace(safety, arguments.callee || this.constructor);
     this.__safety = safety;
   }
   if (!this.plugin) {
-    throw new Error('Missing plugin name');
+    throw new Error("Missing plugin name");
   }
   if (!this.message) {
-    throw new Error('Missing error message');
+    throw new Error("Missing error message");
   }
 }
 
@@ -85,10 +85,10 @@ util.inherits(PluginError, Error);
  */
 
 PluginError.prototype._messageWithDetails = function () {
-  var msg = 'Message:\n    ' + this.message;
+  var msg = "Message:\n    " + this.message;
   var details = this._messageDetails();
-  if (details !== '') {
-    msg += '\n' + details;
+  if (details !== "") {
+    msg += "\n" + details;
   }
   return msg;
 };
@@ -99,7 +99,7 @@ PluginError.prototype._messageWithDetails = function () {
 
 PluginError.prototype._messageDetails = function () {
   if (!this.showProperties) {
-    return '';
+    return "";
   }
 
   var props = Object.keys(this).filter(function (key) {
@@ -108,18 +108,18 @@ PluginError.prototype._messageDetails = function () {
   var len = props.length;
 
   if (len === 0) {
-    return '';
+    return "";
   }
 
-  var res = '';
+  var res = "";
   var i = 0;
   while (len--) {
     var prop = props[i++];
-    res += '    ';
-    res += prop + ': ' + this[prop];
-    res += '\n';
+    res += "    ";
+    res += prop + ": " + this[prop];
+    res += "\n";
   }
-  return 'Details:\n' + res;
+  return "Details:\n" + res;
 };
 
 /**
@@ -128,10 +128,10 @@ PluginError.prototype._messageDetails = function () {
 
 PluginError.prototype.toString = function () {
   var detailsWithStack = function (stack) {
-    return this._messageWithDetails() + '\nStack:\n' + stack;
+    return this._messageWithDetails() + "\nStack:\n" + stack;
   }.bind(this);
 
-  var msg = '';
+  var msg;
   if (this.showStack) {
     // If there is no wrapped error, use the stack captured in the PluginError ctor
     if (this.__safety) {
@@ -152,9 +152,9 @@ PluginError.prototype.toString = function () {
 // Format the output message
 function message(msg, thisArg) {
   var sig = colors.red(thisArg.name);
-  sig += ' in plugin ';
+  sig += " in plugin ";
   sig += '"' + colors.cyan(thisArg.plugin) + '"';
-  sig += '\n';
+  sig += "\n";
   sig += msg;
   return sig;
 }
@@ -164,12 +164,12 @@ function message(msg, thisArg) {
  */
 
 function setDefaults(plugin, message, opts) {
-  if (typeof plugin === 'object') {
+  if (typeof plugin === "object") {
     return defaults(plugin);
   }
   if (message instanceof Error) {
     opts = Object.assign({}, opts, { error: message });
-  } else if (typeof message === 'object') {
+  } else if (typeof message === "object") {
     opts = Object.assign({}, message);
   } else {
     opts = Object.assign({}, opts, { message: message });
@@ -194,7 +194,7 @@ function defaults(opts) {
       showStack: false,
       showProperties: true,
     },
-    opts
+    opts,
   );
 }
 

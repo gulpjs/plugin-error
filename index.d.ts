@@ -8,7 +8,7 @@ declare namespace PluginError {
     new <E extends Error>(
       plugin: string,
       error: E,
-      options?: Options
+      options?: Options,
     ): PluginError<E>;
 
     /**
@@ -19,7 +19,7 @@ declare namespace PluginError {
     new <E extends Error = Error>(
       plugin: string,
       error: E | string,
-      options: Options
+      options: Options,
     ): PluginError<E | { [K in keyof E]: undefined }>;
 
     /**
@@ -28,7 +28,7 @@ declare namespace PluginError {
      */
     new <E extends Error = Error>(
       plugin: string,
-      error: E | string | (Options & { message: string })
+      error: E | string | (Options & { message: string }),
     ): PluginError<E | { [K in keyof E]: undefined }>;
 
     /**
