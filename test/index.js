@@ -211,14 +211,14 @@ describe("PluginError()", function () {
     assert.notStrictEqual(err.toString().indexOf("fileName:"), -1);
   });
 
-  it("should toString quickly", { timeout: 1000 }, function () {
+  it("should toString quickly", { timeout: 100 }, function () {
     var err = new PluginError("test", "it broke", { showStack: true });
     err.toString();
   });
 
   it(
     "should toString quickly with original error",
-    { timeout: 1000 },
+    { timeout: 100 },
     function () {
       var realErr = new Error("it broke");
       var err = new PluginError("test", realErr, { showStack: true });
