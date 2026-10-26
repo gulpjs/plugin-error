@@ -14,7 +14,6 @@ describe("PluginError()", function () {
   it("can be constructed without new", function () {
     // eslint-disable-next-line new-cap
     var err = PluginError("test", "something broke");
-    // eslint-enabled-next-line new-cap
     assert.ok(err instanceof PluginError);
   });
 
