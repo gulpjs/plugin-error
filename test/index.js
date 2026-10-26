@@ -1,169 +1,158 @@
 "use strict";
 
-var expect = require("expect");
+var assert = require("node:assert");
+var { describe, it } = require("node:test");
 
 var PluginError = require("../");
 
 describe("PluginError()", function () {
-  it("should default name to Error", function (done) {
+  it("should default name to Error", function () {
     var err = new PluginError("test", "something broke");
-    expect(err.name).toEqual("Error");
-    done();
+    assert.deepStrictEqual(err.name, "Error");
   });
 
-  it("can be constructed without new", function (done) {
+  it("can be constructed without new", function () {
+    // eslint-disable-next-line new-cap
     var err = PluginError("test", "something broke");
-    expect(err).toBeInstanceOf(PluginError);
-    done();
+    assert.ok(err instanceof PluginError);
   });
 
-  it("throws if plugin name not set", function (done) {
-    expect(function () {
-      new PluginError(undefined, "something broke");
-    }).toThrow(/Missing plugin name/);
-    done();
+  it("throws if plugin name not set", function () {
+    assert.throws(
+      () => {
+        new PluginError(undefined, "something broke");
+      },
+      { message: "Missing plugin name" },
+    );
   });
 
-  it("throws if message not set", function (done) {
-    expect(function () {
-      new PluginError("test");
-    }).toThrow(/Missing error message/);
-    done();
+  it("throws if message not set", function () {
+    assert.throws(
+      () => {
+        new PluginError("test");
+      },
+      { message: "Missing error message" },
+    );
   });
 
-  it("should default name to Error, even when wrapped error has no name", function (done) {
+  it("should default name to Error, even when wrapped error has no name", function () {
     var realErr = { message: "something broke" };
     var err = new PluginError("test", realErr);
-    expect(err.name).toEqual("Error");
-    done();
+    assert.strictEqual(err.name, "Error");
   });
 
-  it("should print the plugin name in toString", function (done) {
+  it("should print the plugin name in toString", function () {
     var err = new PluginError("test", "something broke");
-    expect(err.toString()).toContain("test");
-    done();
+    assert.strictEqual(err.toString().includes("test"), true);
   });
 
-  it("should not include the stack by default in toString", function (done) {
+  it("should not include the stack by default in toString", function () {
     var err = new PluginError("test", "something broke");
     // Just check that there are no 'at' lines
-    expect(err.toString()).not.toContain("at");
-    done();
+    assert.strictEqual(err.toString().includes("at"), false);
   });
 
-  it("should include the stack when specified in toString", function (done) {
+  it("should include the stack when specified in toString", function () {
     var err = new PluginError("test", "something broke", {
       stack: "at huh",
       showStack: true,
     });
     // Just check that there are 'at' lines
-    expect(err.toString()).toContain("at");
-    done();
+    assert.strictEqual(err.toString().includes("at"), true);
   });
 
-  it("should take arguments as one object", function (done) {
+  it("should take arguments as one object", function () {
     var err = new PluginError({
       plugin: "test",
       message: "something broke",
     });
-    expect(err.plugin).toEqual("test");
-    expect(err.message).toEqual("something broke");
-    done();
+    assert.strictEqual(err.plugin, "test");
+    assert.strictEqual(err.message, "something broke");
   });
 
-  it("should take arguments as plugin name and one object", function (done) {
+  it("should take arguments as plugin name and one object", function () {
     var err = new PluginError("test", {
       message: "something broke",
     });
-    expect(err.plugin).toEqual("test");
-    expect(err.message).toEqual("something broke");
-    done();
+    assert.strictEqual(err.plugin, "test");
+    assert.strictEqual(err.message, "something broke");
   });
 
-  it("should take arguments as plugin name and message", function (done) {
+  it("should take arguments as plugin name and message", function () {
     var err = new PluginError("test", "something broke");
-    expect(err.plugin).toEqual("test");
-    expect(err.message).toEqual("something broke");
-    done();
+    assert.strictEqual(err.plugin, "test");
+    assert.strictEqual(err.message, "something broke");
   });
 
-  it("should take arguments as plugin name, message, and one object", function (done) {
+  it("should take arguments as plugin name, message, and one object", function () {
     var err = new PluginError("test", "something broke", { showStack: true });
-    expect(err.plugin).toEqual("test");
-    expect(err.message).toEqual("something broke");
-    expect(err.showStack).toEqual(true);
-    done();
+    assert.strictEqual(err.plugin, "test");
+    assert.strictEqual(err.message, "something broke");
+    assert.strictEqual(err.showStack, true);
   });
 
-  it("should take arguments as plugin name, error, and one object", function (done) {
+  it("should take arguments as plugin name, error, and one object", function () {
     var realErr = new Error("something broke");
     realErr.fileName = "original.js";
     var err = new PluginError("test", realErr, {
       showStack: true,
       fileName: "override.js",
     });
-    expect(err.plugin).toEqual("test");
-    expect(err.message).toEqual("something broke");
-    expect(err.fileName).toEqual("override.js");
-    expect(err.showStack).toEqual(true);
-    done();
+    assert.strictEqual(err.plugin, "test");
+    assert.strictEqual(err.message, "something broke");
+    assert.strictEqual(err.fileName, "override.js");
+    assert.strictEqual(err.showStack, true);
   });
 
-  it("should take properties from error", function (done) {
+  it("should take properties from error", function () {
     var realErr = new Error("something broke");
     realErr.abstractProperty = "abstract";
     var err = new PluginError("test", realErr);
-    expect(err.plugin).toEqual("test");
-    expect(err.message).toEqual("something broke");
-    expect(err.abstractProperty).toEqual("abstract");
-    done();
+    assert.strictEqual(err.plugin, "test");
+    assert.strictEqual(err.message, "something broke");
+    assert.strictEqual(err.abstractProperty, "abstract");
   });
 
-  it("should be configured to show properties by default", function (done) {
+  it("should be configured to show properties by default", function () {
     var err = new PluginError("test", "something broke");
-    expect(err.showProperties).toBe(true);
-    done();
+    assert.strictEqual(err.showProperties, true);
   });
 
-  it("should not be configured to take option to show properties", function (done) {
+  it("should not be configured to take option to show properties", function () {
     var err = new PluginError("test", "something broke", {
       showProperties: false,
     });
-    expect(err.showProperties).toBe(false);
-    done();
+    assert.strictEqual(err.showProperties, false);
   });
 
-  it("should show properties", function (done) {
+  it("should show properties", function () {
     var err = new PluginError("test", "it broke", { showProperties: true });
     err.fileName = "original.js";
     err.lineNumber = 35;
-    expect(err.toString()).toContain("it broke");
-    expect(err.toString()).not.toContain("message:");
-    expect(err.toString()).toContain("fileName:");
-    done();
+    assert.strictEqual(err.toString().includes("it broke"), true);
+    assert.strictEqual(err.toString().includes("message:"), false);
+    assert.strictEqual(err.toString().includes("fileName:"), true);
   });
 
-  it("should show properties", function (done) {
+  it("should show properties", function () {
     var realErr = new Error("something broke");
     realErr.fileName = "original.js";
     realErr.lineNumber = 35;
     var err = new PluginError("test", realErr, { showProperties: true });
-    expect(err.toString()).not.toContain("message:");
-    expect(err.toString()).toContain("fileName:");
-    done();
+    assert.strictEqual(err.toString().includes("message:"), false);
+    assert.strictEqual(err.toString().includes("fileName:"), true);
   });
 
-  it("should not show properties", function (done) {
+  it("should not show properties", function () {
     var realErr = new Error("something broke");
     realErr.fileName = "original.js";
     realErr.lineNumber = 35;
     var err = new PluginError("test", realErr, { showProperties: false });
-    expect(err.toString()).not.toContain("message:");
-    expect(err.toString()).not.toContain("fileName:");
-    done();
+    assert.strictEqual(err.toString().includes("message:"), false);
+    assert.strictEqual(err.toString().includes("fileName:"), false);
   });
 
-  it("should not show properties, but should show stack", function (done) {
+  it("should not show properties, but should show stack", function () {
     var err = new PluginError("test", "it broke", {
       stack: "test stack",
       showStack: true,
@@ -171,13 +160,12 @@ describe("PluginError()", function () {
     });
     err.fileName = "original.js";
     err.lineNumber = 35;
-    expect(err.toString()).not.toContain("message:");
-    expect(err.toString()).not.toContain("fileName:");
-    expect(err.toString()).toContain("test stack");
-    done();
+    assert.strictEqual(err.toString().includes("message:"), false);
+    assert.strictEqual(err.toString().includes("fileName:"), false);
+    assert.strictEqual(err.toString().includes("test stack"), true);
   });
 
-  it("should not show properties, but should show stack for real error", function (done) {
+  it("should not show properties, but should show stack for real error", function () {
     var realErr = new Error("something broke");
     realErr.fileName = "original.js";
     realErr.lineNumber = 35;
@@ -186,13 +174,12 @@ describe("PluginError()", function () {
       showStack: true,
       showProperties: false,
     });
-    expect(err.toString().indexOf("message:")).toEqual(-1);
-    expect(err.toString().indexOf("fileName:")).toEqual(-1);
-    expect(err.toString().indexOf("test stack")).not.toEqual(-1);
-    done();
+    assert.strictEqual(err.toString().indexOf("message:"), -1);
+    assert.strictEqual(err.toString().indexOf("fileName:"), -1);
+    assert.notStrictEqual(err.toString().indexOf("test stack"), -1);
   });
 
-  it("should not show properties, but should show stack for _stack", function (done) {
+  it("should not show properties, but should show stack for _stack", function () {
     var realErr = new Error("something broke");
     realErr.fileName = "original.js";
     realErr.lineNumber = 35;
@@ -201,81 +188,71 @@ describe("PluginError()", function () {
       showStack: true,
       showProperties: false,
     });
-    expect(err.toString().indexOf("message:")).toEqual(-1);
-    expect(err.toString().indexOf("fileName:")).toEqual(-1);
-    expect(err.toString().indexOf("test stack")).not.toEqual(-1);
-    done();
+    assert.strictEqual(err.toString().indexOf("message:"), -1);
+    assert.strictEqual(err.toString().indexOf("fileName:"), -1);
+    assert.notStrictEqual(err.toString().indexOf("test stack"), -1);
   });
 
-  it("should show properties and stack", function (done) {
+  it("should show properties and stack", function () {
     var realErr = new Error("something broke");
     realErr.fileName = "original.js";
     realErr.stack = "test stack";
     var err = new PluginError("test", realErr, { showStack: true });
-    expect(err.toString().indexOf("message:")).toEqual(-1);
-    expect(err.toString().indexOf("fileName:")).not.toEqual(-1);
-    expect(err.toString().indexOf("test stack")).not.toEqual(-1);
-    done();
+    assert.strictEqual(err.toString().indexOf("message:"), -1);
+    assert.notStrictEqual(err.toString().indexOf("fileName:"), -1);
+    assert.notStrictEqual(err.toString().indexOf("test stack"), -1);
   });
 
-  it("should show properties added after the error is created", function (done) {
+  it("should show properties added after the error is created", function () {
     var realErr = new Error("something broke");
     var err = new PluginError("test", realErr);
     err.fileName = "original.js";
-    expect(err.toString().indexOf("message:")).toEqual(-1);
-    expect(err.toString().indexOf("fileName:")).not.toEqual(-1);
-    done();
+    assert.strictEqual(err.toString().indexOf("message:"), -1);
+    assert.notStrictEqual(err.toString().indexOf("fileName:"), -1);
   });
 
-  it("should toString quickly", function (done) {
-    this.timeout(100);
-
+  it("should toString quickly", { timeout: 100 }, function () {
     var err = new PluginError("test", "it broke", { showStack: true });
     err.toString();
-
-    done();
   });
 
-  it("should toString quickly with original error", function (done) {
-    this.timeout(100);
+  it(
+    "should toString quickly with original error",
+    { timeout: 100 },
+    function () {
+      var realErr = new Error("it broke");
+      var err = new PluginError("test", realErr, { showStack: true });
+      err.toString();
+    },
+  );
 
-    var realErr = new Error("it broke");
-    var err = new PluginError("test", realErr, { showStack: true });
-    err.toString();
-
-    done();
-  });
-
-  it('should not show "Details:" if there are no properties to show', function (done) {
+  it('should not show "Details:" if there are no properties to show', function () {
     var err = new PluginError("plugin", "message");
-    expect(err.toString().indexOf("Details:")).toEqual(-1);
-    done();
+    assert.strictEqual(err.toString().indexOf("Details:"), -1);
   });
 
-  it("should not show additional properties added by a domain", function (done) {
+  it("should not show additional properties added by a domain", function (t, done) {
     var Duplex = require("stream").Duplex;
     var stream = new Duplex({ objectMode: true });
     var domain = require("domain").create();
     domain.add(stream);
     domain.on("error", function (err) {
-      expect(err).toBeInstanceOf(PluginError);
-      expect(err.toString()).not.toContain("domain");
+      assert.ok(err instanceof PluginError);
+      assert.strictEqual(err.toString().includes("domain"), false);
       done();
     });
     stream.emit("error", new PluginError("plugin", "message"));
   });
 
-  it("should not modify error argument", function (done) {
+  it("should not modify error argument", function () {
     var realErr = { message: "something broke" };
     new PluginError("test", realErr);
-    expect(realErr).toEqual({ message: "something broke" });
-    done();
+    assert.deepStrictEqual(realErr, { message: "something broke" });
   });
 
-  it("should not modify options argument", function (done) {
+  it("should not modify options argument", function () {
     var opts = { showStack: true };
     new PluginError("test", "message", opts);
-    expect(opts).toEqual({ showStack: true });
-    done();
+    assert.deepStrictEqual(opts, { showStack: true });
   });
 });
